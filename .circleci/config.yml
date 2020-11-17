@@ -10,7 +10,7 @@ jobs:
       name: Show current branch
       command: echo ${CIRCLE_BRANCH}  
    - restore_cache:
-      key: 
+      keys: 
        - app-{{ checksum "package.json" }}
        - app-
    - run:
@@ -122,7 +122,8 @@ jobs:
           only:
            - develop
            - staging
-           - master       
+           - master 
+               
 
 
 
