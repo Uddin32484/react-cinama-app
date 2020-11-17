@@ -109,7 +109,7 @@ workflows:
       - build
       - deploy-to-aws-s3:
           requires:
-            - prettier
+            - build
           filters:
             branches:
               only:
