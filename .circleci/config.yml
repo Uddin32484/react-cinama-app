@@ -10,13 +10,7 @@ executors:
     docker:
       - image: 'cibuilds/base:latest'
     resource_class: small
-jobs:
-  build:
-    executor: app-executor
-    docker:
-     docker:
-      - image: circleci/node:latest
-    working_directory: ~/repo
+
 
     
 aliases:
