@@ -16,8 +16,7 @@ jobs:
     docker:
      - image: circleci/node:latest
     working_directory: ~/repo
-    steps:
-      - checkout
+    
 
 
     
