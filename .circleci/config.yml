@@ -6,10 +6,16 @@ executors:
     docker:
       - image: circleci/node:latest
     working_directory: ~/repo
-  slack-executor:
-    docker:
-      - image: 'cibuilds/base:latest'
-    resource_class: small
+jobs:
+ build:
+  docker:
+   - image:circleci/node:latest
+  working_directory: ~/repo
+  steps:
+   - checkout
+   
+  
+
 
 
 
