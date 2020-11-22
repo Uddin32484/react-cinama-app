@@ -1,59 +1,135 @@
+#orbs:
+ # slack: circleci/slack@3.4.2
 version: 2.1
+executors:
+  app-executor:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/repo
+
+   
+  
+
+
+
+
+    
+aliases:
+  - &show-current-branch-name
+    run:
+      name: show current branch 
+      command: echo ${CIRCLE_BRANCH}
+  - &restore-cache
+    restore_cache:
+      keys: 
+        - app-{{ checksum "package.json" }}
+        - app-
+  - &install-dependencies
+    run:
+      name: Install dependencies
+      command: npm install 
+  - &save-cache
+    save_cache:
+      paths:
+        - node_modules
+      key: app-{{ checksum "package.json" }}
+  - &install-aws-cli
+    run:
+      name: Installing AWS CLI
+      working_directory: /
+      command: |
+        sudo apt-get -y -qq update 
+        sudo apt-get install -y awscli 
+        sudo apt-get install -y python-pip python-dev build-essential
+  - &build-project
+    run:
+      name: Build Project 
+      command: |
+        npm install 
+        npm run build 
+        cd build 
+        zip ../build.zip -r * .[^.]*
+        echo "build successful"
  
 jobs:
   build:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/repo
+    executor: app-executor
+    
     steps:
       - checkout
-      - run:
-          name: Show current branch
-          command: echo ${CIRCLE_BRANCH}
-      - restore_cache:
-          keys:
-            - app-{‌{ checksum "package.json" }}
-            - app-
-      - run:
-          name: Install dependencies
-          command: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: app-{‌{ checksum "package.json" }}
- 
-  deploy-to-heroku:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/repo
+      - *show-current-branch-name
+      - *restore-cache
+      - *install-dependencies
+      - *save-cache
+
+  
+
+  
+
+  deploy-to-aws-s3:
+    executor: app-executor
     steps:
-      - checkout
+      - checkout 
       - run:
-          name: Show current branch
-          command: echo ${CIRCLE_BRANCH}
+         name: Show current branch
+         command: echo ${CIRCLE_BRANCH}
+      - *show-current-branch-name
+      - *install-aws-cli
+      - *build-project
       - run:
-          name: Deploy to Heroku
+          name: Deploy to AWS S3
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]
+            if ["${CIRCLE_BRANCH}"=="master"]
             then
-              git push https://heroku:$HEROKU_API_KEY@git.heroku.com/cinema-ap-production.git ${CIRCLE_BRANCH}:master -f
-            elif [ "${CIRCLE_BRANCH}" == "staging" ]
+              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_PRODUCTION_BUCKET} --delete
+            elif  ["${CIRCLE_BRANCH}" == "staging"]
             then
-              git push https://heroku:$HEROKU_API_KEY@git.heroku.com/cinema-ap-staging.git ${CIRCLE_BRANCH}:master -f
+              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_STAGING_BUCKET} --delete
             else
-              git push https://heroku:$HEROKU_API_KEY@git.heroku.com/cinema-app-devlop.git ${CIRCLE_BRANCH}:master -f
+              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_DEV_BUCKET} --delete
             fi
- 
+  deploy-to-aws-cloudfront:
+    executor: app-executor
+    steps:
+      - checkout 
+      - *show-current-branch-name
+      - *install-aws-cli
+      - *build-project
+      - run:
+          name: Beploy to AWS Cloudfront
+          command: |
+            aws configure set preview.cloudfront true
+            if ["${CIRCLE_BRANCH}"=="master"]
+            then
+              aws cloudfront create-invalidation --distribution-id ${PRODUCTION_DISTRIBUTION_ID} --paths /\*
+            elif  ["${CIRCLE_BRANCH}"=="staging"]
+            then
+              aws cloudfront create-invalidation --distribution-id ${SATGING_DISTRIBUTION_ID} --paths /\*
+            else
+              aws cloudfront create-invalidation --distribution-id ${DEV_DISTRIBUTION_ID} --paths /\*
+            fi
+  
+
 workflows:
   build_and_deploy:
     jobs:
       - build
-      - deploy-to-heroku:
+      - deploy-to-aws-s3:
           requires:
             - build
           filters:
             branches:
               only:
-                - develop
+                - develop 
                 - staging
-                - master
+                - master 
+      - deploy-to-aws-cloudfront:
+          requires:
+            - deploy-to-aws-s3
+          filters:
+            branches:
+              only:
+                - develop 
+                - staging
+                - master 
+     
