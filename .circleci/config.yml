@@ -56,4 +56,8 @@ workflows:
               only:
                 - develop
                 - staging
+<<<<<<< HEAD
                 - production
+=======
+                - production
+>>>>>>> origin/staging
