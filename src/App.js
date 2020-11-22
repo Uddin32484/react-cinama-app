@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-<h1>Welcome to  This is Yub! amazon loop </h1>
+<h1>Welcome to  This is Yub! </h1>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
