@@ -133,7 +133,7 @@ workflows:
                 - master
       - deploy-to-aws-s3:
           requires:
-            - build
+            - prettier
           filters:
             branches:
               only:
