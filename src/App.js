@@ -4,7 +4,6 @@ import logo from './logo.svg';
 function App() {
   return (
  <div className="App">
-      // eslint-disable-next-line react/react-in-jsx-scope
       <header className="App-header">
 <h1>Welcome to  This is Yub! develop!!!! </h1>
         <img src={logo} className="App-logo" alt="logo" />
