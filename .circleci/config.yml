@@ -124,13 +124,13 @@ jobs:
             fi
   
   notify-via-slack:
-    executor: slack-executor
-    steps:
-      - slack/notify:
-          message: "${CIRCLE_BRANCH} branch deployment to aws s3 and cloudfront is complete."
-          webhook: $CIRCLECI_SLACK_WEBHOOK
-      - slack/status:
-          webhook: $CIRCLECI_SLACK_WEBHOOK 
+   executor: slack-executor
+   steps:
+    - slack/notify:
+       message: "${CIRCLE_BRANCH} branch deployment to aws s3 and cloudfront is complete."
+       webhook: $CIRCLECI_SLACK_WEBHOOK
+    - slack/status:
+       webhook: $CIRCLECI_SLACK_WEBHOOK 
 workflows:
   build_and_deploy:
     jobs:
@@ -163,8 +163,8 @@ workflows:
                 - staging
                 - master 
 
-  #    - notify-via-slack:
-  #        requires:
+      - notify-via-slack:
+          requires:
   #          - deploy-to-aws-cloudfront
   #        filters:
   #          branches:
