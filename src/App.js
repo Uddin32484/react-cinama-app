@@ -1,25 +1,18 @@
+import React from 'react';
+import { Provider } from 'react-redux';
 import './App.css';
-import logo from './logo.svg';
+import store from './redux/store';
 
 function App() {
   return (
- <div className="App">
-      <header className="App-header">
-<h1>Welcome to  This is Yub! develop!!!! </h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React welcome
-        </a>
-      </header>
+ <Provider store={store}>
+<div className="app">
+    <h1>Welcome to movie app</h1>
+     <h2>Redux setup complete</h2>
     </div>
+
+</Provider>
+
   );
 }
 
