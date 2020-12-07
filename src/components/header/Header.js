@@ -31,11 +31,22 @@ const HEADER_LIST = [
 const Header = () => {
   let [navClass, setNavClass] = useState(false);
   let [menuClass, setMenuClass] = useState(false);
-  /* const [type, setType] = useState('now_playing');
+  const [type, setType] = useState('now_playing');
   const [search, setSearch] = useState('');
   const [disableSearch, setDisableSearch] = useState(false);
-  const [hideHeader, setHideHeader] = useState(false); */
 
+  const onSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+  const setMovieTypeUrl = (type) => {
+    setDisableSearch(false);
+    if (location.pathname !== '/') {
+      history.push('/');
+      setType(type);
+    } else {
+      setType(type);
+    }
+  };
   const toggleMenu = () => {
     menuClass = !menuClass;
     navClass = !navClass;
@@ -57,7 +68,7 @@ const Header = () => {
             </div>
           <ul className={`${navClass ? 'header-nav header-mobile-nav' : 'header-nav nav navbar-nav navbar-right'}`}>
               {HEADER_LIST.map((data) => (
-                <li key={data.id} className={data.type === type ? 'header-nav-item active-item' : 'header-nav-item'}>
+               <li key={data.id} className={data.type === type ? 'header-nav-item active-item' : 'header-nav-item'} onClick={() => setMovieTypeUrl(data.type)}>
                   <span className="header-list-name">
                     <i className={data.iconClass}></i>
                   </span>
@@ -65,7 +76,7 @@ const Header = () => {
                   <span className="header-list-name">{data.name}</span>
                 </li>
               ))}
-              <input className={`search-input ${disableSearch ? 'disabled' : ''}`} type="text" placeholder="Search for a movie"/>
+               <input className={`search-input ${disableSearch ? 'disabled' : ''}`} type="text" placeholder="Search for a movie" value={search} onChange={onSearchChange} />
             </ul>
               </div>
         </div>
