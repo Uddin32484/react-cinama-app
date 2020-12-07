@@ -31,10 +31,10 @@ const HEADER_LIST = [
 const Header = () => {
   let [navClass, setNavClass] = useState(false);
   let [menuClass, setMenuClass] = useState(false);
-  const [type, setType] = useState('now_playing');
+  /*  const [type, setType] = useState('now_playing');
   const [search, setSearch] = useState('');
   const [disableSearch, setDisableSearch] = useState(false);
-  const [hideHeader, setHideHeader] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false); */
 
   const toggleMenu = () => {
     menuClass = !menuClass;
