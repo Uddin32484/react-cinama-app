@@ -1,25 +1,24 @@
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
+// eslint-disable-next-line no-unused-vars
+import { Provider } from 'react-redux';
 import './App.css';
-import logo from './logo.svg';
-
+// eslint-disable-next-line no-unused-vars
+import Header from './components/header/Header';
+// eslint-disable-next-line no-unused-vars
+import Main from './components/main/Main';
+import store from './redux/store';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-<h1>Welcome to  This is Yub! </h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+ <Provider store={store}>
+<div className="app">
+ <Header/>
+   <Main/>
+     <h2>Redux setup complete</h2>
     </div>
+
+</Provider>
+
   );
 }
 
