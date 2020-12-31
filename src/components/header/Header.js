@@ -1,8 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import logo from '../../assets/cinema-logo.svg';
+import { getMovies } from '../../redux/action/Movie';
 import './header.css';
-
 const HEADER_LIST = [
   {
     id: 1,
@@ -29,12 +32,25 @@ const HEADER_LIST = [
     type: 'upcoming'
   }
 ];
-const Header = () => {
+const Header = (props) => {
+  const { getMovies } = props;
   let [navClass, setNavClass] = useState(false);
   let [menuClass, setMenuClass] = useState(false);
   const [type, setType] = useState('now_playing');
   const [search, setSearch] = useState('');
   const [disableSearch, setDisableSearch] = useState(false);
+
+  useEffect(() => {
+    /*   const res = MOVIE_API_URL('now_playing', 1);
+    console.log(res); */
+  /*   const fetchData = async () => {
+      const res = await MOVIE_API_URL('now_playing', 1);
+      console.log(res);
+    };
+    fetchData();  */
+
+    getMovies('now_playing', 1);
+  }, []);
 
   const onSearchChange = (e) => {
     setSearch(e.target.value);
@@ -84,5 +100,15 @@ const Header = () => {
     </>
   );
 };
+Header.prototype = {
+  getMovies: PropTypes.func
 
-export default Header;
+};
+const mapStatePtops = (state) => ({
+  list: state.movies.list
+
+});
+export default connect(
+  mapStatePtops,
+  { getMovies }
+)(Header);

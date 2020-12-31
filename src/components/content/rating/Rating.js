@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
+import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import './Rating.css';
-
 export const Rating = ({ rating, totalStars, className }) => {
   const [numberOfStarts, setNumberOfStarts] = useState();
   const ratingRef = useRef();
@@ -42,4 +42,11 @@ export const Rating = ({ rating, totalStars, className }) => {
          </div>
         </div>
   );
+};
+
+Rating.propTypes = {
+  rating: PropTypes.number.isRequired,
+  totalStars: PropTypes.number.isRequired,
+  className: PropTypes.string
+
 };
