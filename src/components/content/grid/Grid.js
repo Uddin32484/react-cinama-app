@@ -4,13 +4,13 @@ import React from 'react';
 import { Rating } from '../rating/Rating';
 import './Grid.css';
 export const Grid = (props) => {
-  const { images } = props;
+  const { image } = props;
 
   return (
         <>
      <div className="grid">
       {
-          images.map((image, i) =>
+          image.map((image, i) =>
 
       <div key={i}>
         <div className=" grid-cell" style={{ backgroundImage: `url(${image.url})` }}>
