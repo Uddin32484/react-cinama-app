@@ -38,7 +38,7 @@ const Header = (props) => {
   let [menuClass, setMenuClass] = useState(false);
   const [type, setType] = useState('now_playing');
   const [search, setSearch] = useState('');
-  const [disableSearch, setDisableSearch] = useState(false);
+  /* const [disableSearch, setDisableSearch] = useState(false); */
 
   useEffect(() => {
     /*   const res = MOVIE_API_URL('now_playing', 1);
@@ -103,7 +103,7 @@ const Header = (props) => {
                   <span className="header-list-name">{data.name}</span>
                 </li>
               ))}
-               <input className={`search-input ${disableSearch ? 'disabled' : ''}`} type="text" placeholder="Search for a movie" value={search} onChange={onSearchChange} />
+               <input className="search-input" type="text" placeholder="Search for a movie" value={search} onChange={onSearchChange} />
             </ul>
               </div>
         </div>
