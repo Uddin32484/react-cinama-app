@@ -179,7 +179,7 @@ workflows:
       
       - deploy-to-aws-s3:
           requires:
-            - publish-to-docker-hub
+           - build
           filters:
             branches:
               only:
