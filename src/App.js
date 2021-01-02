@@ -11,7 +11,7 @@ import store from './redux/store';
 function App() {
   return (
  <Provider store={store}>
-<div className="app">
+<div className="App">
  <Header/>
    <Main/>
      <h2>Redux setup complete</h2>
