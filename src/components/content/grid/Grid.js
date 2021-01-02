@@ -1,19 +1,33 @@
 /* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import LazyImage from '../../../lazy-image/LazyImage';
+import { IMAGE_URL } from '../../../services/Movies.service';
 import { Rating } from '../rating/Rating';
 import './Grid.css';
-export const Grid = (props) => {
-  const { image } = props;
 
+const Grid = (props) => {
+  const { list } = props;
+  const [movieData, setMovieData] = useState([]);
+
+  useEffect(() => {
+    setMovieData(list);
+  }, [list]);
   return (
         <>
      <div className="grid">
       {
-          image.map((image, i) =>
+         movieData.map((data) =>
 
-      <div key={i}>
-        <div className=" grid-cell" style={{ backgroundImage: `url(${image.url})` }}>
+      <div key={uuidv4()}>
+        <LazyImage className=" grid-cell"
+         src={`${IMAGE_URL}${data.poster_path}`}
+         style={{ backgroundImage: `url(${IMAGE_URL}${data.poster_path})` }}
+         alt="placeholder"
+         >
         <div className="grid-read-more">
            <button className="grid-cell-button">
               Read More
@@ -22,21 +36,30 @@ export const Grid = (props) => {
 
           </div>
             <div className="grid-detail">
-                <span className="grid-detail-title">Mission Impossible</span>
+                <span className="grid-detail-title">{data.title}</span>
                 <div className="grid-detail-rating">
-                 <Rating rating={image.rating} totalStars={5}/>
+                 <Rating rating={data.vote_average} totalStars={5}/>
                     &nbsp;&nbsp;
-                    <div className="grid-vote-average">{image.rating}</div>
+                    <div className="grid-vote-average">{data.vote_average}</div>
               </div>
 
          </div>
 
+      </LazyImage>
       </div>
-      </div>
-          )
+         )
 
       }
     </div>
         </>
   );
 };
+Grid.propTypes = {
+
+  list: PropTypes.array.isRequired
+};
+const mapStateToProps = (state) => ({
+
+  list: state.movies.list
+});
+export default connect(mapStateToProps, {})(Grid);

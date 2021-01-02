@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { IMAGE_URL } from '../../../services/Movies.service';
-import { Grid } from '../grid/Grid';
+import Grid from '../grid/Grid';
 import Paginate from '../paginate/Paginate';
 // eslint-disable-next-line no-unused-vars
 import SlideShow from '../slide-show/SlideShow';
 import './MainContent.css';
 
 const MainContent = (props) => {
-  const { list } = props;
+  const { list, movieType, totalPages, page, getMovies, setResponsePageNumber } = props;
   const [images, setImages] = useState([]);
   const imageArray = [];
   const image = [
@@ -88,6 +88,12 @@ const MainContent = (props) => {
       rating: 8.5
     }
   ];
+  const HEADER_TYPE = {
+    now_playing: 'Now Playing',
+    popular: 'Popular',
+    top_rated: 'Top Rated',
+    upcoming: 'Upcoming'
+  };
   /*  Create random and slice function */
   const randomMovies = list.sort(() => Math.random() - Math.random()).slice(0, 4);
   useEffect(() => {
@@ -122,29 +128,31 @@ const MainContent = (props) => {
       setCurrentPage((prev) => prev + 1);
     }
   };
+  console.log(movieType + ' this is movie type');
   return (
         <div className="main-content">
          <SlideShow/>
          <div className="grid-movie-title">
 
-         <div className="movieType"> Now Playing </div>
+        <div className="movieType">{movieType}  <h3> In Yub Movie Page</h3></div>
            <div className="paginate"></div>
           <div className="paginate">
            <Paginate currentPage={currentPage} totalPages={10} paginate={paginate}/>
          </div>
         </div>
-      <Grid image={image} />
+          <Grid />
         </div>
   );
 };
 
 MainContent.prototype = {
-  list: PropTypes.array.isRequired
+  list: PropTypes.array.isRequired,
+  movieType: PropTypes.array.isRequired
 
 };
 const mapStatePtops = (state) => ({
-  list: state.movies.list
-
+  list: state.movies.list,
+  movieType: state.movies.movieType
 });
 export default connect(
   mapStatePtops,

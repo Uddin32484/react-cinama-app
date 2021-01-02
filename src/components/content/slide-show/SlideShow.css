@@ -33,7 +33,7 @@
   width: 20px;
   padding: 0;
 
-  &::after {
+  after {
     background: #345;
     border-radius: 50%;
     content: "";
