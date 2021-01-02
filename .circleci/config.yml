@@ -173,7 +173,7 @@ workflows:
                 - master 
       - unit-test:
           requires:
-            - deploy-to-aws-s3
+           
           filters:
             branches:
               only:
