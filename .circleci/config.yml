@@ -144,12 +144,6 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-      - unit-test:
-         filters:
-          only:
-           - develop
-           - staging
-           - master
       #- prettier:
       #    requires:
       #      - build
@@ -177,7 +171,15 @@ workflows:
                 - develop 
                 - staging
                 - master 
-
+      - unit-test:
+          requires:
+            - deploy-to-aws-s3
+          filters:
+            branches:
+              only:
+                - develop 
+                - staging
+                - master 
   #    - notify-via-slack:
   #        requires:
   #          - deploy-to-aws-cloudfront
